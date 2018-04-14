@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>IP</th>
+      <th>Preference</th>
+      <th>Assignment</th>
+    </tr>
+  <thead/>
+  <tbody>
+    {% for player, data in player_data.items() %}
+      <tr>
+        <td>{{ data.name }}</td>
+        <td>{{ player }}</td>
+        <td>{{ data.preference }}</td>
+        <td>{{ data.assignment }}</td>
+      </tr>
+    {% endfor %}
+  <tbody/>
+<table/>
+{% endblock content %}

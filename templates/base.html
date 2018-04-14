@@ -1,0 +1,30 @@
+ <!DOCTYPE html>
+  <html>
+    <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+      <link rel="stylesheet" type="text/css" href="https://rawgit.com/outboxcraft/beauter/master/beauter.min.css"/>
+      {% block extra_head %}
+      {% endblock extra_head %}
+    </head>
+
+    <body>
+      <h1>{{ title }}</h1>
+      {% if error_message %}
+        <div class="alert">{{ error_message }}</div>
+      {% endif %}
+      {% if message %}
+        <div class="alert _info">{{ message }}</div>
+      {% endif %}
+
+      {% block content %}
+      {% endblock content %}
+
+      <div>
+        <small>Your IP address: {{ request.remote_addr }}</small>
+      </div>
+    <script src="https://rawgit.com/outboxcraft/beauter/master/beauter.min.js"></script>
+    {% block extra_script %}
+    {% endblock extra_script %}
+    </body>
+  </html>

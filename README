@@ -1,0 +1,35 @@
+Setup:
+
+1. Install Python 3.6
+2. `pip install -r requirements.txt`
+
+Run development server (should reload on code changes):
+```
+export FLASK_APP=server.py
+flask run
+```
+
+Run production server (uses an event loop to handle multiple clients simultaneously):
+```
+python server.py
+```
+
+Customize game:
+1. Make a file called `custom_game_definition.py`.
+2. Override any setting in `game_definition.py` but putting it in `custom_game_definition.py`
+
+Run the tests:
+```
+python test.py
+```
+
+Docs for libraries we use:
+* http://flask.pocoo.org/docs/
+* http://jinja.pocoo.org/docs/
+* http://beauter.outboxcraft.com/
+
+
+TODO (remove once implemented):
+* Actual game definition
+* List total players, especially before game has started
+* List teammates (as applicable) once game has started

@@ -1,0 +1,4 @@
+__pycache__/
+*.py[cod]
+
+custom_game_definition.py

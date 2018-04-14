@@ -1,0 +1,29 @@
+ {% extends "base.html" %}
+
+ {% block content %}
+
+  {% if assignment %}
+    <div class="alert {% if assignment == preference %}_success{% else %}_yellow{% endif %}">{{ assignment_message or assignment }}</div>
+  {% endif %}
+
+  <form action="/" method="post">
+    <fieldset>
+      <label for="nameField">Name</label>
+      <input type="text" name="name" placeholder="(enter your name)" value="{{ name }}" {% if started %}disabled{% endif %}>
+      <label for="preferenceField">Preference</label>
+        <select name="preference" {% if started %}disabled{% endif %}>
+          {% for option in preference_options %}
+            <option value="{{ option }}" {% if option == preference %}selected="selected"{% endif %}>{{ option }}</option>
+          {% endfor %}
+        </select>
+      <br/>
+      {% if not started %}
+        <input class=" _primary button" type="submit" name="submit" value="Submit">
+        <input class=" _warning button" type="submit" name="start" value="Start Game">
+      {% else %}
+        <input class=" _danger button" type="submit" name="end" value="End Game">
+      {% endif %}
+    </fieldset>
+  </form>
+
+{% endblock content %}
