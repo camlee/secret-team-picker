@@ -7,17 +7,19 @@
     <tr>
       <th>Name</th>
       <th>IP</th>
+      <th>Port</th>
       <th>Preference</th>
       <th>Assignment</th>
     </tr>
   <thead/>
   <tbody>
-    {% for player, data in player_data.items() %}
+    {% for player in player_data.values() %}
       <tr>
-        <td>{{ data.name }}</td>
-        <td>{{ player }}</td>
-        <td>{{ data.preference }}</td>
-        <td>{{ data.assignment }}</td>
+        <td>{{ player.name }}</td>
+        <td>{{ player.ip }}</td>
+        <td>{{ player.port }}</td>
+        <td>{{ player.preference }}</td>
+        <td>{{ player.assignment }}</td>
       </tr>
     {% endfor %}
   <tbody/>
