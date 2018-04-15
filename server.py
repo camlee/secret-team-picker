@@ -1,14 +1,16 @@
-#!/usr/bin/env python3
+#!/usr/bin/env
+import os
 import time
 import argparse
 from flask import Flask, request, abort, send_from_directory, render_template
 from gevent.wsgi import WSGIServer
 
-from game_definition import title, preference_options, assign
+from game_definition import get_game
 
 class GlobalState:
     player_data = {}
     started = False
+    game = get_game(os.environ.get('SECRET_TEAM_PICKER_GAME','DefaultGame'))
 
 app = Flask(__name__)
 
@@ -18,8 +20,8 @@ def get_player_key(request):
 @app.context_processor
 def inject():
     context = {
-        "title": title,
-        "preference_options": preference_options,
+        "title": GlobalState.game.title,
+        "preference_options": GlobalState.game.preference_options,
         "started": GlobalState.started
         }
     player_context = GlobalState.player_data.get(get_player_key(request), {})
@@ -43,7 +45,7 @@ def index():
         elif "start" in request.form:
             if not GlobalState.started:
                 GlobalState.started = True
-                GlobalState.player_data = assign(GlobalState.player_data)
+                GlobalState.player_data = GlobalState.game.assign(GlobalState.player_data)
             else:
                 context["error_message"] = "The game has already started."
         elif "end" in request.form:
@@ -76,8 +78,13 @@ if __name__ == "__main__":
     ap.add_argument("-D", "--debug", action="store_true", default=False, help="Enable flask debug mode.")
     ap.add_argument("-H", "--host", type=str, default="localhost", help="Specify host to listen on.")
     ap.add_argument("-P", "--port", type=int, default=5000, help="Specify port to listen on.")
+    ap.add_argument("-G", "--game", type=str, default=None, help="Specify the game to import and run.")
     args = ap.parse_args()
 
+    if args.game:
+        GlobalState.game = get_game(args.game)
+
+    app.debug = args.debug
     server = WSGIServer((args.host, args.port), app)
     print(" Running on http://%s:%s/ (Press CTRL+C to quit)" % (args.host, args.port))
     try:
