@@ -10,7 +10,7 @@ from game_definition import get_game
 class GlobalState:
     player_data = {}
     started = False
-    game = get_game(os.environ.get('SECRET_TEAM_PICKER_GAME','DefaultGame'))
+    game = get_game(os.environ.get('SECRET_TEAM_PICKER_GAME','DefaultGame'))()
 
 app = Flask(__name__)
 
@@ -64,15 +64,6 @@ def players():
     return render_template("players.html", player_data=GlobalState.player_data)
 
 
-@app.route("/favicon.ico")
-def favicon():
-    return send_from_directory("static", "favicon.ico")
-
-@app.route("/static/<path:filename>")
-def static_files(filename):
-    return send_from_directory("static", filename)
-
-
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("-D", "--debug", action="store_true", default=False, help="Enable flask debug mode.")
@@ -82,7 +73,7 @@ if __name__ == "__main__":
     args = ap.parse_args()
 
     if args.game:
-        GlobalState.game = get_game(args.game)
+        GlobalState.game = get_game(args.game)()
 
     app.debug = args.debug
     server = WSGIServer((args.host, args.port), app)

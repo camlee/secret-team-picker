@@ -1,4 +1,5 @@
 import sys
+import random
 
 games = {}
 
@@ -16,7 +17,7 @@ class GameDefinition:
     title = "Title"
     preference_options = []
 
-    def assign(player_data):
+    def assign(self, player_data):
         """
         Assigns each player to one of the preference options, based on their preference
         and the game rules.
@@ -30,11 +31,16 @@ class GameDefinition:
         """
         raise NotImplementedError()
 
+    def shuffled_players(self, players):
+        players = list(players)
+        random.shuffle(players)
+        return players
+
 class DefaultGame(GameDefinition):
     title = "Secret Team Picker"
     preference_options = ["Team A", "Team B", "Team C"]
 
-    def assign(player_data):
+    def assign(self, player_data):
         player_count = len(player_data)
         team_count = len(preference_options)
         players_per_team = int(player_count / team_count)
@@ -43,7 +49,7 @@ class DefaultGame(GameDefinition):
         team_counts = {preference: 0 for preference in preference_options}
         unassigned_players = []
 
-        for player in player_data.values():
+        for player in self.shuffled_players(player_data.values()):
             players_on_team = team_counts[player["preference"]]
             if players_on_team < players_per_team or (players_on_team == players_per_team and extra_players):
                 assignment = player["preference"]
