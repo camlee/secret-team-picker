@@ -23,16 +23,16 @@ class SecretHitler(GameDefinition):
         for player in self.shuffled_players(player_data.values()):
             if (player["preference"] == "Liberal" and current_liberals < liberal_count) or fascist_count == current_fascists:
                 player["assignment"] = "Liberal"
-                player["assignment_message"] = "Your are a liberal."
+                player["assignment_message"] = "You are a liberal."
                 current_liberals += 1
             else:
                 if hitler_chosen is False:
                     player["assignment"] = "Hitler"
-                    player["assignment_message"] = "Your are Hitler."
+                    player["assignment_message"] = "You are Hitler."
                     hitler_chosen = True
                 else:
                     player["assignment"] = "Fascist"
-                    player["assignment_message"] = "Your are a fascist."
+                    player["assignment_message"] = "You are a fascist."
                 current_fascists += 1
 
         return player_data
