@@ -21,11 +21,12 @@
       {% block content %}
       {% endblock content %}
 
-      <div>
-        <small>Your IP address: {{ request.remote_addr }}</small>
-        <br/>
-        <small>Your port: {{ request.environ.get('REMOTE_PORT') }}</small>
-      </div>
+      <br/>
+      <small>Your session Id: {{ session.id }}</small>
+      <br/>
+      <small>Your IP address: {{ request.remote_addr }}</small>
+      <br/>
+      <small>Your port: {{ request.environ.get('REMOTE_PORT') }}</small>
     <script src="https://rawgit.com/outboxcraft/beauter/master/beauter.min.js"></script>
     {% block extra_script %}
     {% endblock extra_script %}

@@ -5,6 +5,7 @@
 <table>
   <thead>
     <tr>
+      <th>Session Id</th>
       <th>Name</th>
       <th>IP</th>
       <th>Port</th>
@@ -13,8 +14,9 @@
     </tr>
   <thead/>
   <tbody>
-    {% for player in player_data.values() %}
+    {% for player_key, player in player_data.items() %}
       <tr>
+        <td>{{ player_key }}</td>
         <td>{{ player.name }}</td>
         <td>{{ player.ip }}</td>
         <td>{{ player.port }}</td>

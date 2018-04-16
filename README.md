@@ -1,4 +1,4 @@
-Simple website to allow players of a game to anonymously pick their
+Simple web app to allow players of a game to anonymously pick their
 team. Allows players to specify a preference and then assigns each
 player to a team according to the rules of the game but attempting
 to respect everyone's preference.
@@ -31,14 +31,15 @@ Run the tests:
 python test.py
 ```
 
-Docs for libraries we use:
+(or feel free to write some real ones)
+
+Docs for libraries used:
 * http://flask.pocoo.org/docs/
 * http://jinja.pocoo.org/docs/
 * http://beauter.outboxcraft.com/
 
 
 TODO (remove once implemented):
-* The resistance game definition
+* Add more games (ex. The Resistance)
 * List total players, especially before game has started
 * List teammates (as applicable) once game has started
-* Use sessions to identify users instead of IP address and port
