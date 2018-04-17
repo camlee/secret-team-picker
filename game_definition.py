@@ -1,5 +1,6 @@
 import sys
 import random
+import operator
 
 games = {}
 
@@ -36,17 +37,22 @@ class GameDefinition:
         random.shuffle(players)
         return players
 
+    def ordered_players(self, players):
+        players = list(players)
+        players.sort(key=operator.itemgetter("number"))
+        return players
+
 class DefaultGame(GameDefinition):
     title = "Secret Team Picker"
     preference_options = ["Team A", "Team B", "Team C"]
 
     def assign(self, player_data):
         player_count = len(player_data)
-        team_count = len(preference_options)
+        team_count = len(self.preference_options)
         players_per_team = int(player_count / team_count)
         extra_players = player_count % team_count
 
-        team_counts = {preference: 0 for preference in preference_options}
+        team_counts = {preference: 0 for preference in self.preference_options}
         unassigned_players = []
 
         for player in self.shuffled_players(player_data.values()):
@@ -74,6 +80,20 @@ class DefaultGame(GameDefinition):
             team_counts[player["assignment"]] += 1
 
         return player_data
+
+    def player_list(self, player_data, for_player):
+        players = []
+
+        for player in self.ordered_players(player_data.values()):
+            player = player.copy()
+            if player.get("key") != for_player.get("key"):
+                player["preference"] = "(hidden)"
+                if player.get("assignment"):
+                    player["assignment"] = "(hidden)"
+            players.append(player)
+
+        return players
+
 
 register_game(DefaultGame)
 

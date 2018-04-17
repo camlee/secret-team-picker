@@ -37,4 +37,18 @@ class SecretHitler(GameDefinition):
 
         return player_data
 
+    def player_list(self, player_data, for_player):
+        players = []
+
+        for player in self.ordered_players(player_data.values()):
+            player = player.copy()
+            if player.get("key") != for_player.get("key"):
+                player["preference"] = "(hidden)"
+                if player.get("assignment") and for_player.get("assignment") != "Fascist":
+                    player["assignment"] = "(hidden)"
+            players.append(player)
+
+        return players
+
+
 register_game(SecretHitler)

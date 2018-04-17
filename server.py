@@ -11,6 +11,7 @@ from game_definition import get_game
 class GlobalState:
     player_data = {}
     started = False
+    next_player_number = 1
     game = get_game(os.environ.get('SECRET_TEAM_PICKER_GAME','DefaultGame'))()
     player_keys = set()
 
@@ -35,13 +36,14 @@ def get_player_key(request):
 
 @app.context_processor
 def inject():
+    player = GlobalState.player_data.get(get_player_key(request), {})
     context = {
         "title": GlobalState.game.title,
         "preference_options": GlobalState.game.preference_options,
-        "started": GlobalState.started
+        "started": GlobalState.started,
+        "players": GlobalState.game.player_list(GlobalState.player_data, player)
         }
-    player_context = GlobalState.player_data.get(get_player_key(request), {})
-    context["player"] = player_context
+    context["player"] = player
     return context
 
 @app.route("/", methods=["POST", "GET"])
@@ -49,10 +51,12 @@ def index():
     context = {}
     if request.method == "POST":
         if "submit" in request.form:
-            data = GlobalState.player_data.setdefault(get_player_key(request), {})
+            player_key = get_player_key(request)
+            data = GlobalState.player_data.setdefault(player_key, {})
             if not GlobalState.started:
-                data["ip"] = request.remote_addr
-                data["port"] = request.environ.get('REMOTE_PORT')
+                data["key"] = player_key
+                data["number"] = GlobalState.next_player_number
+                GlobalState.next_player_number += 1
                 data["name"] = request.form["name"]
                 data["preference"] = request.form["preference"]
                 data["message"] = 'You have selected: %s.' % data["preference"]
@@ -70,19 +74,13 @@ def index():
             if GlobalState.started:
                 GlobalState.player_data = {}
                 GlobalState.started = False
+                GlobalState.next_player_number = 1
             else:
                 context["error_message"] = "The game has already ended."
 
     if GlobalState.started:
         context["message"] = "The game has started. There are %s players." % len(GlobalState.player_data)
     return render_template("index.html", **context)
-
-@app.route("/players", methods=["GET"])
-def players():
-    if request.remote_addr not in ["localhost", "127.0.0.1", "::1"]:
-        abort(404)
-
-    return render_template("players.html", player_data=GlobalState.player_data)
 
 
 if __name__ == "__main__":

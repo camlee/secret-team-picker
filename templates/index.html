@@ -6,13 +6,15 @@
   {% endif %}
 
   {% if player.assignment %}
-    <div class="alert {% if player.assignment == player.preference %}_success{% else %}_yellow{% endif %} ">
+    <div class="alert _success">
       {{ player.assignment_message or player.assignment }}
     </div>
   {% endif %}
 
   <form action="/" method="post">
     <fieldset>
+      <label for="idField">Id</label>
+      <input type="text" name="id" value="{{ session.id }}" disabled>
       <label for="nameField">Name</label>
       <input type="text" name="name" placeholder="(enter your name)" value="{{ player.name }}" {% if started %}disabled{% endif %}>
       <label for="preferenceField">Preference</label>
@@ -27,12 +29,44 @@
         {% if player %}
           <input class=" _danger button" type="submit" name="quit" value="Leave Game">
         {% endif %}
+      {% endif %}
+    </fieldset>
+
+    <fieldset>
+      {% if players %}
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Player Id</th>
+              <th>Name</th>
+              <th>Preference</th>
+              <th>Assignment</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for player in players %}
+            <tr>
+              <td>{{ player.number }}</td>
+              <td>{{ player.key }}</td>
+              <td>{{ player.name }}</td>
+              <td>{{ player.preference }}</td>
+              <td>{{ player.assignment }}</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      {% endif %}
+
+      {% if not started %}
         <br/>
         <input class=" _warning button" type="submit" name="start" value="Start Game">
       {% else %}
         <br/>
         <input class=" _danger button" type="submit" name="end" value="End Game">
       {% endif %}
+
     </fieldset>
   </form>
+
 {% endblock content %}
