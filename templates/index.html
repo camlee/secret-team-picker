@@ -13,8 +13,6 @@
 
   <form action="/" method="post">
     <fieldset>
-      <label for="idField">Id</label>
-      <input type="text" name="id" value="{{ session.id }}" disabled>
       <label for="nameField">Name</label>
       <input type="text" name="name" placeholder="(enter your name)" value="{{ player.name }}" {% if started %}disabled{% endif %}>
       <label for="preferenceField">Preference</label>
@@ -58,15 +56,17 @@
         </table>
       {% endif %}
 
+      <input class=" _success button" type="submit" name="refresh" value="Refresh">
       {% if not started %}
-        <br/>
         <input class=" _warning button" type="submit" name="start" value="Start Game">
       {% else %}
-        <br/>
         <input class=" _danger button" type="submit" name="end" value="End Game">
       {% endif %}
 
     </fieldset>
   </form>
+
+ <br/>
+ <small>Your Player Id: {{ session.id }}</small>
 
 {% endblock content %}

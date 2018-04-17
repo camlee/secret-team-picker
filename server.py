@@ -52,14 +52,13 @@ def index():
     if request.method == "POST":
         if "submit" in request.form:
             player_key = get_player_key(request)
-            data = GlobalState.player_data.setdefault(player_key, {})
             if not GlobalState.started:
-                data["key"] = player_key
-                data["number"] = GlobalState.next_player_number
+                player = GlobalState.player_data.setdefault(player_key, {})
+                player["key"] = player_key
+                player["number"] = GlobalState.next_player_number
                 GlobalState.next_player_number += 1
-                data["name"] = request.form["name"]
-                data["preference"] = request.form["preference"]
-                data["message"] = 'You have selected: %s.' % data["preference"]
+                player["name"] = request.form["name"]
+                player["preference"] = request.form["preference"]
             else:
                 context["error_message"] = "The game has already started."
         elif "quit" in request.form:
