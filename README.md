@@ -41,5 +41,5 @@ Docs for libraries used:
 
 TODO (remove once implemented):
 * Add more games (ex. The Resistance)
-* List total players, especially before game has started
-* List teammates (as applicable) once game has started
+* Automatic syncing (i.e push refreshes down to each player in the game)
+* Allow "No Preference" option.
