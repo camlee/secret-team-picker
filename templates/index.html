@@ -45,7 +45,7 @@
           <tbody>
           {% for player in players %}
             <tr>
-              <td>{{ player.number }}</td>
+              <td>{{ loop.index }}</td>
               <td>{{ player.key }}</td>
               <td>{{ player.name }}</td>
               <td>{{ player.preference }}</td>

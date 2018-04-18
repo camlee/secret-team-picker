@@ -55,8 +55,9 @@ def index():
             if not GlobalState.started:
                 player = GlobalState.player_data.setdefault(player_key, {})
                 player["key"] = player_key
-                player["number"] = GlobalState.next_player_number
-                GlobalState.next_player_number += 1
+                if not player.get("number"):
+                    player["number"] = GlobalState.next_player_number
+                    GlobalState.next_player_number += 1
                 player["name"] = request.form["name"]
                 player["preference"] = request.form["preference"]
             else:
