@@ -14,7 +14,7 @@
   <form action="/" method="post">
     <fieldset>
       <label for="nameField">Name</label>
-      <input type="text" name="name" placeholder="(enter your name)" value="{{ player.name }}" {% if started %}disabled{% endif %}>
+      <input type="text" maxlength="500" name="name" placeholder="(enter your name)" value="{{ player.name }}" {% if started %}disabled{% endif %}>
       <label for="preferenceField">Preference</label>
         <select name="preference" {% if started %}disabled{% endif %}>
           {% for option in preference_options %}

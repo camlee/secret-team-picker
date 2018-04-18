@@ -17,6 +17,7 @@ class GlobalState:
 
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)
+app.config['MAX_CONTENT_LENGTH'] = 1 * 1024 * 1024 # 1 MB
 
 def generate_session_id():
     player_key = None
@@ -53,13 +54,16 @@ def index():
         if "submit" in request.form:
             player_key = get_player_key(request)
             if not GlobalState.started:
-                player = GlobalState.player_data.setdefault(player_key, {})
-                player["key"] = player_key
-                if not player.get("number"):
-                    player["number"] = GlobalState.next_player_number
-                    GlobalState.next_player_number += 1
-                player["name"] = request.form["name"]
-                player["preference"] = request.form["preference"]
+                if len(request.form["name"]) > 500:
+                    context["error_message"] = "The name you have selected is too long. Please pick a shorter one."
+                else:
+                    player = GlobalState.player_data.setdefault(player_key, {})
+                    player["key"] = player_key
+                    if not player.get("number"):
+                        player["number"] = GlobalState.next_player_number
+                        GlobalState.next_player_number += 1
+                    player["name"] = request.form["name"]
+                    player["preference"] = request.form["preference"]
             else:
                 context["error_message"] = "The game has already started."
         elif "quit" in request.form:
